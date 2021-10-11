@@ -1,0 +1,33 @@
+.take-profit-row {
+    display: flex;
+    border-bottom: 1px solid #393644;
+    margin-top: 0.2rem;
+
+    &__label-title {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__close-button {
+        padding: 0;
+        padding-top: 1.3rem;
+        font-size: 1rem;
+    }
+
+    &__cell {
+        display: flex;
+        align-items: center;
+
+        &_profit {
+            flex-basis: 25%;
+        }
+        &_target-price {
+            flex-basis: 42%;
+        }
+        &_amount {
+            flex-basis: 29%;
+        }
+        &_close {
+            flex-basis: 4%;
+        }
+    }
+}

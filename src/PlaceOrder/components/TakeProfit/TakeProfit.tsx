@@ -1,9 +1,26 @@
-/* eslint @typescript-eslint/no-use-before-define: 0 */
-import React from "react";
-import "./TakeProfit.scss";
+import React from 'react';
+import block from "bem-cn-lite";
+import { TakeProfitHeader } from './components/TakeProfitHeader/TakeProfitHeader';
+import { TakeProfitItem } from './components/TakeProfitItem/TakeProfitItem';
 
-const TakeProfit = () => {
-  return <div></div>;
+import './TakeProfit.scss';
+
+const b = block('take-profit');
+
+type Props = {
 };
 
-export { TakeProfit };
+const TakeProfit = () => {
+    return (
+        <div className={b()}>
+            <TakeProfitHeader isOpen={true} className={b('header')} />
+            <TakeProfitItem className={b('item')} />
+            <TakeProfitItem className={b('item')} />
+            <TakeProfitItem className={b('item')} />
+            <TakeProfitItem className={b('item')} />
+            <TakeProfitItem className={b('item')} />
+        </div>
+    )
+}
+
+export { TakeProfit }

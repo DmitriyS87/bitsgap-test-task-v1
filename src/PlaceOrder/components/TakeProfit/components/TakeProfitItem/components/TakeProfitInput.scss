@@ -1,0 +1,12 @@
+.take-profit-input {
+    &__label-title {
+        display: block;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.0002rem;
+    }
+
+    &__input-wrapper {
+        padding-right: 0.7rem;
+    }
+}

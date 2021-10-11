@@ -9,9 +9,9 @@ import { NumberInput, Button } from "components";
 import { BASE_CURRENCY, QUOTE_CURRENCY } from "./constants";
 import { useStore } from "./context";
 import { PlaceOrderTypeSwitch } from "./components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
-import { TakeProfit } from "./components/TakeProfit/TakeProfit";
 
 import "./PlaceOrderForm.scss";
+import { TakeProfit } from "./components/TakeProfit/TakeProfit";
 
 const b = block("place-order-form");
 
@@ -44,7 +44,7 @@ export const PlaceOrderForm = observer(() => {
         </div>
         <div className={b("price")}>
           <NumberInput
-            label="Price"
+            label={`Price, ${QUOTE_CURRENCY}`}
             value={price}
             onChange={(value) => setPrice(Number(value))}
             InputProps={{ endAdornment: QUOTE_CURRENCY }}
@@ -53,7 +53,7 @@ export const PlaceOrderForm = observer(() => {
         <div className={b("amount")}>
           <NumberInput
             value={amount}
-            label="Amount"
+            label={`Amount, ${BASE_CURRENCY}`}
             onChange={(value) => setAmount(Number(value))}
             InputProps={{ endAdornment: BASE_CURRENCY }}
           />
@@ -61,13 +61,13 @@ export const PlaceOrderForm = observer(() => {
         <div className={b("total")}>
           <NumberInput
             value={total}
-            label="Total"
+            label={`Total, ${QUOTE_CURRENCY}`}
             onChange={(value) => setTotal(Number(value))}
             InputProps={{ endAdornment: QUOTE_CURRENCY }}
           />
         </div>
         <div className={b("take-profit")}>
-          <TakeProfit />
+           <TakeProfit />
         </div>
         <div className="submit">
           <Button
