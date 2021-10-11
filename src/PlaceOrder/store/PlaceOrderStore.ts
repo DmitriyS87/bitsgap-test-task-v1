@@ -4,6 +4,7 @@ import { OrderSide } from "../model";
 
 export class PlaceOrderStore {
   @observable activeOrderSide: OrderSide = "buy";
+  @observable isTakeProfitOn: boolean = false;
   @observable price: number = 0;
   @observable amount: number = 0;
 
@@ -14,6 +15,11 @@ export class PlaceOrderStore {
   @action.bound
   public setOrderSide(side: OrderSide) {
     this.activeOrderSide = side;
+  }
+
+  @action.bound
+  public toggleTakeProfit() {
+    this.isTakeProfitOn = !this.isTakeProfitOn;
   }
 
   @action.bound

@@ -8,7 +8,17 @@
         padding: 0.4rem 0;
     }
 
-    &__item {
-        
+    &__add-button {
+        padding: 1rem 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    &__result-amount {
+        display: flex;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.875rem;
+        padding: 0.8rem 0 0.675rem;
     }
 }
