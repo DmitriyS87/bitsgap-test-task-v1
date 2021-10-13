@@ -4,27 +4,40 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import block from "bem-cn-lite";
 
 import "./TakeProfitItem.scss";
-import { NumberInput } from 'components';
 import { PERCENT, QUOTE_CURRENCY } from 'PlaceOrder/constants';
-import { InputLabel, Typography, TypographyProps } from "@material-ui/core";
 import { TakeProfitInput } from "./components/TakeProfitInput";
 
 const b = block('take-profit-row');
 
 type Props = {
+  id: string;
+  isProfitBySell?: boolean;
   className?: string;
+  amount: any;
+  profit: any;
+  price: any;
+  onChangeProfit: any;
+  onChangeTragetPrice: any;
+  onChangeAmount: any;
+  onDelete: any;
+  updateProfit: any;
+  updateTargetPrice: any;
+  updateAmount: any;
 };
 
 const CloseButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('close-button', className)} ><CancelIcon fontSize="small" /></IconButton>
 
-const TakeProfitRow = ({ className }: Props) => {
+const TakeProfitRow = ({ id, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
+
+
   return <div className={b(null, className)}>
     <div className={b('cell', { 'profit': true })}>
       <TakeProfitInput
         label="Profit"
         variant="underlined"
-        value={0}
-        onChange={(value) => console.log(Number(value))}
+        value={profit}
+        onBlur={updateTargetPrice}
+        onChange={onChangeProfit}
         InputProps={{ endAdornment: PERCENT }}
       />
     </div>
@@ -32,22 +45,24 @@ const TakeProfitRow = ({ className }: Props) => {
       <TakeProfitInput
         label="Target price"
         variant="underlined"
-        value={1}
-        onChange={(value) => console.log(Number(value))}
+        value={price}
+        onChange={onChangeTragetPrice}
+        onBlur={updateProfit}
         InputProps={{ endAdornment: QUOTE_CURRENCY }}
       />
     </div>
     <div className={b('cell', { 'amount': true })}>
       <TakeProfitInput
-        label="Amount to buy"
+        label={isProfitBySell ? "Amount to sell" : "Amount to buy"}
         variant="underlined"
-        value={2}
-        onChange={(value) => console.log(Number(value))}
+        value={amount}
+        onChange={onChangeAmount}
+        onBlur={updateAmount}
         InputProps={{ endAdornment: PERCENT }}
       />
     </div>
     <div className={b('cell', { 'close': true })}>
-      <CloseButton className={b('close-button')} />
+      <CloseButton className={b('close-button')} onClick={() => onDelete(id)} />
     </div>
   </div>;
 };

@@ -22,9 +22,10 @@ export const PlaceOrderForm = observer(() => {
     total,
     amount,
     setPrice,
-    setAmount,
     setTotal,
-    setOrderSide
+    setOrderSide,
+    updateAmount,
+    updateChildren
   } = useStore();
 
   return (
@@ -47,6 +48,7 @@ export const PlaceOrderForm = observer(() => {
             label={`Price, ${QUOTE_CURRENCY}`}
             value={price}
             onChange={(value) => setPrice(Number(value))}
+            onBlur={updateChildren}
             InputProps={{ endAdornment: QUOTE_CURRENCY }}
           />
         </div>
@@ -54,7 +56,7 @@ export const PlaceOrderForm = observer(() => {
           <NumberInput
             value={amount}
             label={`Amount, ${BASE_CURRENCY}`}
-            onChange={(value) => setAmount(Number(value))}
+            onChange={(value) => updateAmount(Number(value))}
             InputProps={{ endAdornment: BASE_CURRENCY }}
           />
         </div>
