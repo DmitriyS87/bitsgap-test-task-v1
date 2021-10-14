@@ -23,7 +23,7 @@ function Switch({
   label
 }: Props) {
   return (
-    <label className={b({ reversed, "full-width": fullWidth })}>
+    <label role="checkbox" aria-checked={checked} tabIndex={0} className={b({ reversed, "full-width": fullWidth })}>
       <input
         className={b("checkbox")}
         type="checkbox"

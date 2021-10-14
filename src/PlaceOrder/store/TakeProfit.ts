@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { mathRoundToDec } from "utils";
 import { v4 } from 'uuid';
 
@@ -6,11 +6,15 @@ export type TakeProfitItemType = TakeProfit;
 
 export type TakeProfitData = Pick<TakeProfitItemType, 'amount' | 'price' | 'profit'>
 
+type TakeProfitError = Partial<Record<keyof TakeProfitData, string>>;
+
 class TakeProfit {
     @observable profit: number = 0;
     @observable price: number = 0;
     @observable amount: number = 0;
     @observable id: string = "";
+    @observable error: any = {};
+    @observable showError: boolean = false;
     store: any;
 
     constructor(store: any, initialState?: TakeProfitData, id: string = v4()) {
@@ -32,6 +36,23 @@ class TakeProfit {
     @action.bound
     public setProfit(profit: number) {
         this.profit = profit;
+    }
+
+    @action.bound
+    public setShowError(showError: boolean) {
+        this.showError = showError;
+    }
+
+    @action.bound
+    public setError(error: any) {
+        this.error = error;
+    }
+
+    @action.bound
+    public addError(error: any) {
+        [...Object.keys(error)].forEach((name) => {
+            this.error[name] = `${this.error[name] || ''} ${error[name] || ''}`.trim();
+        })
     }
 
     @action.bound
@@ -60,6 +81,30 @@ class TakeProfit {
     public updateTargetPrice() {
         this.setPrice(mathRoundToDec(this.store.price + this.profit / 100 * this.store.price, 2));
         this.store.countProjectedProfit();
+    }
+
+    @action.bound
+    public validateState() {
+        let error: TakeProfitError = {};
+
+        if (this.profit < 0.01) {
+            error.profit = "Minimum value is 0.01"
+        }
+
+        if (this.price <= 0) {
+            error.price = "Price must be greater than 0"
+        }
+
+        this.setError(error);
+    };
+
+    public getFormValue = () => {
+        return {
+            id: this.id,
+            price: this.price,
+            amount: this.amount,
+            profit: this.profit,
+        }
     }
 }
 

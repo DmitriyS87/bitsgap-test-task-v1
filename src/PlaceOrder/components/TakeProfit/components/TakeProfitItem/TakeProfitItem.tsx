@@ -23,16 +23,19 @@ type Props = {
   updateProfit: any;
   updateTargetPrice: any;
   updateAmount: any;
+  error: any;
+  showError: boolean;
 };
 
 const CloseButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('close-button', className)} ><CancelIcon fontSize="small" /></IconButton>
 
-const TakeProfitRow = ({ id, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
+const TakeProfitRow = ({ id, error, showError, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
 
 
   return <div className={b(null, className)}>
     <div className={b('cell', { 'profit': true })}>
       <TakeProfitInput
+        error={error.profit}
         label="Profit"
         variant="underlined"
         value={profit}
@@ -43,6 +46,7 @@ const TakeProfitRow = ({ id, isProfitBySell, className, profit, price, amount, o
     </div>
     <div className={b('cell', { 'target-price': true })}>
       <TakeProfitInput
+        error={error.price}
         label="Target price"
         variant="underlined"
         value={price}
@@ -53,6 +57,7 @@ const TakeProfitRow = ({ id, isProfitBySell, className, profit, price, amount, o
     </div>
     <div className={b('cell', { 'amount': true })}>
       <TakeProfitInput
+        error={error.amount}
         label={isProfitBySell ? "Amount to sell" : "Amount to buy"}
         variant="underlined"
         value={amount}

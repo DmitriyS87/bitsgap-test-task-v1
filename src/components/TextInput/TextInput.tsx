@@ -58,7 +58,6 @@ const TextInput = ({
   };
 
   const [isFocused, setIsFocused] = useState(false);
-
   return (
     <Tooltip
       open={isFocused && !!error}

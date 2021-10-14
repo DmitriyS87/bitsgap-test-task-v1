@@ -4,6 +4,10 @@ import { mathRoundToDec } from "utils";
 import { OrderSide } from "../model";
 import { TakeProfit, TakeProfitData, TakeProfitItemType } from "./TakeProfit";
 
+type PlaceOrderFormKeys = 'price' | 'amount' | 'projectedProfit' | 'takeProfits' | 'showError';
+
+type PlaceOrderStoreError = Partial<Record<PlaceOrderFormKeys | 'profitSumm', string>>;
+
 const defaultTakeProfit = {
   amount: 0,
   price: 0,
@@ -17,6 +21,8 @@ export class PlaceOrderStore {
   @observable amount: number = 0;
   @observable projectedProfit: number = 0;
   @observable takeProfits: TakeProfitItemType[] = [];
+  @observable showError: boolean = false;
+  @observable error: boolean = false;
 
   @computed get takeProfitCount(): number {
     return this.takeProfits.length;
@@ -28,6 +34,20 @@ export class PlaceOrderStore {
 
   @computed get total(): number {
     return this.price * this.amount;
+  }
+
+  @action.bound
+  public addTakeProfit(initialData: TakeProfitData = this.newTakeProfitData(20, this.lastTakeProfit.profit + 2)) {
+    const newTakeProfit = new TakeProfit(this, toJS(initialData),);
+    this.takeProfits.push(newTakeProfit);
+    this.recountAmount();
+    this.countProjectedProfit();
+  }
+
+  @action.bound
+  public clearTakeProfit() {
+    this.takeProfits = [];
+    this.projectedProfit = 0;
   }
 
   @action.bound
@@ -43,20 +63,6 @@ export class PlaceOrderStore {
     }
 
     this.projectedProfit = mathRoundToDec(this.takeProfits.reduce((result, item) => result + this.countTakeProfitResult(item, isBuyOperation), 0), 4);
-  }
-
-  @action.bound
-  public addTakeProfit(initialData: TakeProfitData = this.newTakeProfitData(20, this.lastTakeProfit.profit + 2)) {
-    const newTakeProfit = new TakeProfit(this, toJS(initialData));
-    this.takeProfits.push(newTakeProfit);
-    this.recountAmount();
-    this.countProjectedProfit();
-  }
-
-  @action.bound
-  public clearTakeProfit() {
-    this.takeProfits = [];
-    this.projectedProfit = 0;
   }
 
   @action.bound
@@ -93,12 +99,6 @@ export class PlaceOrderStore {
     this.isTakeProfitOn = true;
   }
 
-
-  @action.bound
-  public setPrice(price: number) {
-    this.price = price;
-  }
-
   @action.bound
   public updateChildren() {
     this.takeProfits.forEach((item) => item.updateTargetPriceByMainPrice(this.price))
@@ -108,6 +108,16 @@ export class PlaceOrderStore {
   @action.bound
   public setAmount(amount: number) {
     this.amount = amount;
+  }
+
+  @action.bound
+  public setError(price: number) {
+    this.price = price;
+  }
+
+  @action.bound
+  public setPrice(price: number) {
+    this.price = price;
   }
 
   @action.bound
@@ -125,13 +135,70 @@ export class PlaceOrderStore {
   }
 
   @action.bound
-  public updateAmount(amount: number) {
-    this.setAmount(amount);
-    this.countProjectedProfit();
+  public validatePlaceOrder(): PlaceOrderStoreError {
+    let error: PlaceOrderStoreError = {};
+
+    if (this.takeProfitCount) {
+      this.takeProfits.forEach((item) => item.validateState());
+
+      const takeProfitsValues = this.takeProfits.map((item) => item.getFormValue())
+
+      const takeProfitsProppertySumm = [...takeProfitsValues].reduce((summ, item) => {
+        [...(Object.keys(item) as (keyof TakeProfitData | "id")[])].forEach((key) => { if (key !== "id") { summ[key] = (summ[key] || 0) + item[key] } })
+        return summ;
+      }, {} as TakeProfitData);
+
+      const wrongProfitOrderStartIndex = takeProfitsValues.findIndex((item, idx, arr) => idx > 0 && item.profit < arr[idx - 1].profit)
+
+      if (wrongProfitOrderStartIndex !== -1) {
+        this.takeProfits.forEach((item, idx) => idx >= wrongProfitOrderStartIndex - 1 && item.addError({ profit: "Each target's profit should be greater than the previous one" }));
+      }
+
+      if (takeProfitsProppertySumm.profit > 500) {
+        this.takeProfits.forEach((item) => item.addError({ profit: "Maximum profit sum is 500%" }));
+      }
+
+      if (takeProfitsProppertySumm.amount > 100) {
+        this.takeProfits.forEach((item) => item.addError({ amount: ` "${takeProfitsProppertySumm.amount}% out of 100% selected. Please decrease by ${takeProfitsProppertySumm.amount - 100}%"` }));
+      }
+
+
+    }
+
+    return error;
+  };
+
+  public countTakeProfitPrice(profit: number) {
+    return this.price + this.price * profit / 100;
+  }
+
+  public countTakeProfitResult(takeProfit: TakeProfit, isBuyOperation = false) {
+    return this.amount * (isBuyOperation ? 1 : -1) * (takeProfit.price - this.price) * takeProfit.amount / 100;
   }
 
   public countTakeProfitsTotalAmount() {
     return this.takeProfits.reduce((a, i) => a + i.amount, 0)
+  }
+
+
+  public getFormValue = () => {
+    if (this.isTakeProfitOn && this.takeProfitCount) {
+      return {
+        activeOrderSide: this.activeOrderSide,
+        price: this.price,
+        amount: this.amount,
+        total: this.total,
+        projectedProfit: this.projectedProfit,
+        takeProfits: this.takeProfits.map((item) => item.getFormValue())
+      }
+    }
+
+    return {
+      activeOrderSide: this.activeOrderSide,
+      price: this.price,
+      amount: this.amount,
+      total: this.total,
+    }
   }
 
   public getTakeProfitWithMaxAmount() {
@@ -146,12 +213,9 @@ export class PlaceOrderStore {
     }
   }
 
-  public countTakeProfitPrice(profit: number) {
-    return this.price + this.price * profit / 100;
-  }
-
-  public countTakeProfitResult(takeProfit: TakeProfit, isBuyOperation = false) {
-    return this.amount * (isBuyOperation ? 1 : -1) * (takeProfit.price - this.price) * takeProfit.amount / 100;
+  public updateAmount = (amount: number) => {
+    this.setAmount(amount);
+    this.countProjectedProfit();
   }
 
 }
