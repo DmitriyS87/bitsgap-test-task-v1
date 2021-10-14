@@ -1,20 +1,21 @@
 import { observable, action } from "mobx";
 import { mathRoundToDec } from "utils";
 import { v4 } from 'uuid';
+import { PlaceOrderStore } from "./PlaceOrderStore";
 
-export type TakeProfitItemType = TakeProfit;
+export type TakeProfitItemType = TakeProfitDomain;
 
 export type TakeProfitData = Pick<TakeProfitItemType, 'amount' | 'price' | 'profit'>
 
 type TakeProfitError = Partial<Record<keyof TakeProfitData, string>>;
 
-class TakeProfit {
+class TakeProfitDomain {
     @observable profit: number = 0;
     @observable price: number = 0;
     @observable amount: number = 0;
     @observable id: string = "";
     @observable error: any = {};
-    store: any;
+    store: PlaceOrderStore;
 
     constructor(store: any, initialState?: TakeProfitData, id: string = v4()) {
         this.store = store;
@@ -102,6 +103,4 @@ class TakeProfit {
     }
 }
 
-//
-
-export { TakeProfit }
+export { TakeProfitDomain }

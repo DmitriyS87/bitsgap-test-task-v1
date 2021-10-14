@@ -6,31 +6,22 @@ import block from "bem-cn-lite";
 import "./TakeProfitItem.scss";
 import { PERCENT, QUOTE_CURRENCY } from 'PlaceOrder/constants';
 import { TakeProfitInput } from "./components/TakeProfitInput";
+import { TakeProfitDomain } from "PlaceOrder/store/TakeProfitDomain";
+import { PlaceOrderStore } from "PlaceOrder/store/PlaceOrderStore";
 
 const b = block('take-profit-row');
 
-type Props = {
-  id: string;
+type PartialTakeProfitDomain = Omit<TakeProfitDomain, 'store' | 'setError' | 'addError' | 'setInitialState' | 'updateTargetPriceByMainPrice' | 'validateState' | 'getFormValue'>
+
+interface Props extends PartialTakeProfitDomain {
   isProfitBySell?: boolean;
+  onDelete: PlaceOrderStore['removeTakeProfit'];
   className?: string;
-  amount: any;
-  profit: any;
-  price: any;
-  onChangeProfit: any;
-  onChangeTragetPrice: any;
-  onChangeAmount: any;
-  onDelete: any;
-  updateProfit: any;
-  updateTargetPrice: any;
-  updateAmount: any;
-  error: any;
-  };
+};
 
 const RemoveButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('remove-button', className)} ><CancelIcon fontSize="small" /></IconButton>
 
-const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
-
-
+const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, amount, setProfit, setPrice, setAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
   return <div className={b(null, className)}>
     <div className={b('cell', { 'profit': true })}>
       <TakeProfitInput
@@ -39,7 +30,7 @@ const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, am
         variant="underlined"
         value={profit}
         onBlur={updateTargetPrice}
-        onChange={onChangeProfit}
+        onChange={setProfit}
         InputProps={{ endAdornment: PERCENT }}
       />
     </div>
@@ -49,7 +40,7 @@ const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, am
         label="Target price"
         variant="underlined"
         value={price}
-        onChange={onChangeTragetPrice}
+        onChange={setPrice}
         onBlur={updateProfit}
         InputProps={{ endAdornment: QUOTE_CURRENCY }}
       />
@@ -60,7 +51,7 @@ const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, am
         label={isProfitBySell ? "Amount to sell" : "Amount to buy"}
         variant="underlined"
         value={amount}
-        onChange={onChangeAmount}
+        onChange={setAmount}
         onBlur={updateAmount}
         InputProps={{ endAdornment: PERCENT }}
       />
@@ -71,4 +62,4 @@ const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, am
   </div>;
 };
 
-export { TakeProfitRow as TakeProfitItem };
+export { TakeProfitRow };

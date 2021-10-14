@@ -17,14 +17,11 @@ const b = block('take-profit');
 
 const TakeProfit = observer(() => {
     const {
-        activeOrderSide,
         isTakeProfitOn,
         projectedProfit,
         takeProfitCount,
-        takeProfits,
         toggleTakeProfit,
         addTakeProfit,
-        removeTakeProfit,
     } = useStore();
 
     const handleAddTakeProfitClick = () => addTakeProfit();
@@ -33,7 +30,7 @@ const TakeProfit = observer(() => {
         <div className={b()}>
             <TakeProfitHeader isOpen={isTakeProfitOn} onToggle={toggleTakeProfit} className={b('header')} />
             {isTakeProfitOn && <>
-                <TakeProfitList takeProfits={takeProfits} onRemove={removeTakeProfit} isProfitBySell={activeOrderSide === "buy"} />
+                <TakeProfitList />
                 {takeProfitCount < 5 && <TextButton className={b('add-button')} onClick={handleAddTakeProfitClick}>
                     <CancelIcon style={{ transform: "rotate(45deg)", marginRight: "0.3rem", fontSize: "1rem" }} />
                     <span style={{ fontSize: "0.875rem" }}>Add profit target {takeProfitCount} / {PLACE_ORDER_MAX_TAKE_PROFIT} </span>

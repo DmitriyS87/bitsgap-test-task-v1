@@ -1,35 +1,40 @@
 import { observer } from 'mobx-react';
-import { TakeProfit } from 'PlaceOrder/store/TakeProfit';
 import React, { FC } from 'react';
-import { TakeProfitItem } from '../TakeProfitItem/TakeProfitItem';
+import { TakeProfitRow } from '../TakeProfitItem/TakeProfitItem';
 import block from "bem-cn-lite";
-
-type Props = {
-    isProfitBySell: boolean;
-    takeProfits: TakeProfit[];
-    onRemove: (id: string) => void;
-}
+import { useStore } from 'PlaceOrder/context';
 
 const b = block('take-profit');
 
-const TakeProfitList: FC<Props> = observer(({ isProfitBySell, takeProfits, onRemove }) => {
+const TakeProfitList: FC = observer(() => {
+    const {
+        activeOrderSide,
+        takeProfits,
+        removeTakeProfit,
+    } = useStore();
+
     return (
         <>
-            {takeProfits.map(({ id, error, setAmount, setPrice, setProfit, updateProfit, updateTargetPrice, updateAmount, ...props }) => (
-                <TakeProfitItem
-                    isProfitBySell={isProfitBySell}
+            {takeProfits.map(({ store, getFormValue,
+                setProfit,
+                setPrice,
+                setAmount,
+                updateAmount,
+                updateProfit,
+                updateTargetPrice,
+                ...props }) => (
+                <TakeProfitRow
+                    {...props}
+                    key={props.id}
+                    isProfitBySell={activeOrderSide === "buy"}
+                    onDelete={removeTakeProfit}
                     className={b('item')}
-                    error={error}
-                    id={id}
-                    key={id}
-                    onChangeProfit={setProfit}
-                    onChangeTragetPrice={setPrice}
-                    onChangeAmount={setAmount}
-                    onDelete={onRemove}
+                    setProfit={setProfit}
+                    setPrice={setPrice}
+                    setAmount={setAmount}
+                    updateAmount={updateAmount}
                     updateProfit={updateProfit}
                     updateTargetPrice={updateTargetPrice}
-                    updateAmount={updateAmount}
-                    {...props}
                 />
             ))}
         </>

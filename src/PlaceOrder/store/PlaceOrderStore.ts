@@ -2,7 +2,7 @@ import { observable, computed, action, toJS } from "mobx";
 import { mathRoundToDec } from "utils";
 
 import { OrderSide } from "../model";
-import { TakeProfit, TakeProfitData, TakeProfitItemType } from "./TakeProfit";
+import { TakeProfitDomain, TakeProfitData, TakeProfitItemType } from "./TakeProfitDomain";
 
 type PlaceOrderFormKeys = 'price' | 'amount' | 'projectedProfit' | 'takeProfits';
 
@@ -37,7 +37,7 @@ export class PlaceOrderStore {
 
   @action.bound
   public addTakeProfit(initialData: TakeProfitData = this.newTakeProfitData(20, this.lastTakeProfit.profit + 2)) {
-    const newTakeProfit = new TakeProfit(this, toJS(initialData),);
+    const newTakeProfit = new TakeProfitDomain(this, toJS(initialData),);
     this.takeProfits.push(newTakeProfit);
     this.recountAmount();
     this.countProjectedProfit();
@@ -66,6 +66,7 @@ export class PlaceOrderStore {
 
   @action.bound
   public removeTakeProfit(id: string) {
+    if (this.takeProfitCount < 2) return;
     const idexOf = this.takeProfits.findIndex((item) => item.id === id);
     this.takeProfits.splice(idexOf, 1);
     this.countProjectedProfit();
@@ -171,7 +172,7 @@ export class PlaceOrderStore {
     return this.price + this.price * profit / 100;
   }
 
-  public countTakeProfitResult(takeProfit: TakeProfit, isBuyOperation = false) {
+  public countTakeProfitResult(takeProfit: TakeProfitDomain, isBuyOperation = false) {
     return this.amount * (isBuyOperation ? 1 : -1) * (takeProfit.price - this.price) * takeProfit.amount / 100;
   }
 
