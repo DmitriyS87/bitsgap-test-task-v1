@@ -4,7 +4,7 @@ import { mathRoundToDec } from "utils";
 import { OrderSide } from "../model";
 import { TakeProfit, TakeProfitData, TakeProfitItemType } from "./TakeProfit";
 
-type PlaceOrderFormKeys = 'price' | 'amount' | 'projectedProfit' | 'takeProfits' | 'showError';
+type PlaceOrderFormKeys = 'price' | 'amount' | 'projectedProfit' | 'takeProfits';
 
 type PlaceOrderStoreError = Partial<Record<PlaceOrderFormKeys | 'profitSumm', string>>;
 
@@ -21,7 +21,6 @@ export class PlaceOrderStore {
   @observable amount: number = 0;
   @observable projectedProfit: number = 0;
   @observable takeProfits: TakeProfitItemType[] = [];
-  @observable showError: boolean = false;
   @observable error: boolean = false;
 
   @computed get takeProfitCount(): number {

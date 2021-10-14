@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
 import { mathRoundToDec } from "utils";
 import { v4 } from 'uuid';
 
@@ -14,7 +14,6 @@ class TakeProfit {
     @observable amount: number = 0;
     @observable id: string = "";
     @observable error: any = {};
-    @observable showError: boolean = false;
     store: any;
 
     constructor(store: any, initialState?: TakeProfitData, id: string = v4()) {
@@ -39,11 +38,6 @@ class TakeProfit {
     }
 
     @action.bound
-    public setShowError(showError: boolean) {
-        this.showError = showError;
-    }
-
-    @action.bound
     public setError(error: any) {
         this.error = error;
     }
@@ -62,7 +56,7 @@ class TakeProfit {
 
     @action.bound
     public updateTargetPriceByMainPrice(price: number) {
-        this.price = Math.floor(price + price * this.profit / 100);
+        this.price = mathRoundToDec(price + price * this.profit / 100, 2);
     }
 
     @action.bound
@@ -73,13 +67,13 @@ class TakeProfit {
 
     @action.bound
     public updateProfit() {
-        this.setProfit(Math.floor((this.price / this.store.price - 1) * 100));
+        this.setProfit(mathRoundToDec((this.price / this.store.price - 1) * 100 || 0, 3));
         this.store.countProjectedProfit();
     }
 
     @action.bound
     public updateTargetPrice() {
-        this.setPrice(mathRoundToDec(this.store.price + this.profit / 100 * this.store.price, 2));
+        this.setPrice(mathRoundToDec(this.store.price + this.profit / 100 * this.store.price || 0, 2));
         this.store.countProjectedProfit();
     }
 

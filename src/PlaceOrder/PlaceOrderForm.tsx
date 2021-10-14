@@ -1,4 +1,4 @@
-import React, { FormEvent, FormEventHandler } from "react";
+import React, { FormEventHandler } from "react";
 import { observer } from "mobx-react";
 import block from "bem-cn-lite";
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -12,7 +12,6 @@ import { PlaceOrderTypeSwitch } from "./components/PlaceOrderTypeSwitch/PlaceOrd
 
 import "./PlaceOrderForm.scss";
 import { TakeProfit } from "./components/TakeProfit/TakeProfit";
-import { classicNameResolver } from "typescript";
 
 const b = block("place-order-form");
 
@@ -34,18 +33,11 @@ export const PlaceOrderForm = observer(() => {
     e.preventDefault();
     e.stopPropagation();
 
-    validatePlaceOrder();
-    // const value = getFormValue();
-    // const error = vaidatePlaceOrderForm(value);
-    // const isError = [...Object.keys(error)].length;
+    const isValid = validatePlaceOrder();
 
-    // if (isError) {
-      // showValidationError(error)
-      // return;
-    // }
-
-    // submit form
-
+    if (isValid) {
+      // submit form
+    }
   }
 
   return (

@@ -7,10 +7,17 @@
         color: rgba(255, 255, 255, 0.5);
     }
 
-    &__close-button {
+    &__remove-button {
         padding: 0;
         padding-top: 1.3rem;
         font-size: 1rem;
+        color: #393644;
+        ;
+        ;
+
+        &:hover {
+            color: #0083ff;
+        }
     }
 
     &__cell {

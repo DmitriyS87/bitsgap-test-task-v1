@@ -1,7 +1,7 @@
 import { Switch } from "components";
 import React from "react";
 import block from "bem-cn-lite";
-import HelpIcon from '@material-ui/icons/Help';
+import { ReactComponent as Question } from 'static/img/question.svg';
 
 import "./TakeProfitHeader.scss";
 import { Typography } from "@material-ui/core";
@@ -18,7 +18,7 @@ const TakeProfitHeader = ({ isOpen, className, onToggle }: Props) => {
   return <div className={b(null, className)}>
     <div className={b('title-wrapper')}>
       <Typography className={b('title')}>Take Profit</Typography>
-      <HelpIcon className={b('question')} fontSize="small" />
+      <Question className={b('question')} />
     </div>
     <div>
       <Switch checked={isOpen} onChange={onToggle} />

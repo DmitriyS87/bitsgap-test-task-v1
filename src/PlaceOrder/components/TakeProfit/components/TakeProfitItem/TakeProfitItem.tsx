@@ -24,12 +24,11 @@ type Props = {
   updateTargetPrice: any;
   updateAmount: any;
   error: any;
-  showError: boolean;
-};
+  };
 
-const CloseButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('close-button', className)} ><CancelIcon fontSize="small" /></IconButton>
+const RemoveButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('remove-button', className)} ><CancelIcon fontSize="small" /></IconButton>
 
-const TakeProfitRow = ({ id, error, showError, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
+const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, amount, onChangeProfit, onChangeTragetPrice, onChangeAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
 
 
   return <div className={b(null, className)}>
@@ -67,7 +66,7 @@ const TakeProfitRow = ({ id, error, showError, isProfitBySell, className, profit
       />
     </div>
     <div className={b('cell', { 'close': true })}>
-      <CloseButton className={b('close-button')} onClick={() => onDelete(id)} />
+      <RemoveButton className={b('remove-button')} onClick={() => onDelete(id)} />
     </div>
   </div>;
 };

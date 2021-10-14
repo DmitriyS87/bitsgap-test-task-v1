@@ -15,12 +15,11 @@ const b = block('take-profit');
 const TakeProfitList: FC<Props> = observer(({ isProfitBySell, takeProfits, onRemove }) => {
     return (
         <>
-            {takeProfits.map(({ id, error, showError, setAmount, setPrice, setProfit, updateProfit, updateTargetPrice, updateAmount, ...props }) => (
+            {takeProfits.map(({ id, error, setAmount, setPrice, setProfit, updateProfit, updateTargetPrice, updateAmount, ...props }) => (
                 <TakeProfitItem
                     isProfitBySell={isProfitBySell}
                     className={b('item')}
                     error={error}
-                    showError={showError}
                     id={id}
                     key={id}
                     onChangeProfit={setProfit}

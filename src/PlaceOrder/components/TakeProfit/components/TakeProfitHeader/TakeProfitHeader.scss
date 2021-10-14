@@ -7,10 +7,12 @@
 
     &__title-wrapper {
         display: flex;
+        align-items: center;
         color: #fff;
     }
 
     &__question {
+        display: inline-block;
         margin-left: 0.3rem;
         font-size: 1.1rem;
     }
