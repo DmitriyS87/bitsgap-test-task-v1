@@ -1,4 +1,5 @@
 import { observable, computed, action, toJS } from "mobx";
+import { PLACE_ORDER_FORM_PROFIT_DEC_PLACES, TAKE_PROFIT_INITIAL_FIRST_AMOUNT, TAKE_PROFIT_INITIAL_FIRST_PROFIT, TAKE_PROFIT_MAX_AMOUNT_SUMM, TAKE_PROFIT_MAX_PROFIT_SUMM, TAKE_PROFIT_NEW_AMOUNT_VALUE, TAKE_PROFIT_UNREMOVABLE_ITEMS_COUNT } from "PlaceOrder/constants";
 import { mathRoundToDec } from "utils";
 
 import { OrderSide } from "../model";
@@ -32,10 +33,10 @@ export class PlaceOrderStore {
   }
 
   @action.bound
-  public addTakeProfit(initialData: TakeProfitData = this.newTakeProfitData(20, this.lastTakeProfit.profit + 2)) {
+  public addTakeProfit(initialData: TakeProfitData = this.newTakeProfitData(TAKE_PROFIT_NEW_AMOUNT_VALUE, this.lastTakeProfit.profit + 2)) {
     const newTakeProfit = new TakeProfitDomain(this, toJS(initialData),);
     this.takeProfits.push(newTakeProfit);
-    this.recountAmount();
+    this.recountTakeProfitsAmount();
     this.countProjectedProfit();
   }
 
@@ -53,7 +54,7 @@ export class PlaceOrderStore {
 
     if (this.takeProfitCount === 1) {
       const aloneTakeProfit = this.takeProfits[0];
-      this.projectedProfit = mathRoundToDec(this.countTakeProfitResult(aloneTakeProfit, isBuyOperation), 4);
+      this.projectedProfit = mathRoundToDec(this.countTakeProfitResult(aloneTakeProfit, isBuyOperation), PLACE_ORDER_FORM_PROFIT_DEC_PLACES);
       return;
     }
 
@@ -62,7 +63,7 @@ export class PlaceOrderStore {
 
   @action.bound
   public removeTakeProfit(id: string) {
-    if (this.takeProfitCount < 2) return;
+    if (this.takeProfitCount  <= TAKE_PROFIT_UNREMOVABLE_ITEMS_COUNT) return;
     const idexOf = this.takeProfits.findIndex((item) => item.id === id);
     this.takeProfits.splice(idexOf, 1);
     this.countProjectedProfit();
@@ -71,6 +72,7 @@ export class PlaceOrderStore {
   @action.bound
   public setOrderSide(side: OrderSide) {
     this.activeOrderSide = side;
+    this.countProjectedProfit();
   }
 
   @action.bound
@@ -90,7 +92,7 @@ export class PlaceOrderStore {
 
   @action.bound
   public showTakeProfitForm() {
-    this.addTakeProfit(this.newTakeProfitData(100, 2))
+    this.addTakeProfit(this.newTakeProfitData(TAKE_PROFIT_INITIAL_FIRST_AMOUNT, TAKE_PROFIT_INITIAL_FIRST_PROFIT))
     this.countProjectedProfit();
     this.isTakeProfitOn = true;
   }
@@ -122,11 +124,11 @@ export class PlaceOrderStore {
   }
 
   @action.bound
-  public recountAmount() {
+  public recountTakeProfitsAmount() {
     const summOfAmounts = this.countTakeProfitsTotalAmount();
-    if (summOfAmounts > 100) {
+    if (summOfAmounts > TAKE_PROFIT_MAX_AMOUNT_SUMM) {
       const item = this.getTakeProfitWithMaxAmount();
-      item.setAmount(item.amount - (summOfAmounts - 100))
+      item.setAmount(item.amount - (summOfAmounts - TAKE_PROFIT_MAX_AMOUNT_SUMM))
     }
   }
 
@@ -151,14 +153,14 @@ export class PlaceOrderStore {
         this.takeProfits.forEach((item, idx) => idx >= wrongProfitOrderStartIndex - 1 && item.addError({ profit: "Each target's profit should be greater than the previous one" }));
       }
 
-      if (takeProfitsProppertySumm.profit > 500) {
+      if (takeProfitsProppertySumm.profit > TAKE_PROFIT_MAX_PROFIT_SUMM) {
         isError = true;
-        this.takeProfits.forEach((item) => item.addError({ profit: "Maximum profit sum is 500%" }));
+        this.takeProfits.forEach((item) => item.addError({ profit: `Maximum profit sum is ${TAKE_PROFIT_MAX_PROFIT_SUMM}%` }));
       }
 
-      if (takeProfitsProppertySumm.amount > 100) {
+      if (takeProfitsProppertySumm.amount > TAKE_PROFIT_MAX_AMOUNT_SUMM) {
         isError = true;
-        this.takeProfits.forEach((item) => item.addError({ amount: ` "${takeProfitsProppertySumm.amount}% out of 100% selected. Please decrease by ${takeProfitsProppertySumm.amount - 100}%"` }));
+        this.takeProfits.forEach((item) => item.addError({ amount: ` "${takeProfitsProppertySumm.amount}% out of ${TAKE_PROFIT_MAX_AMOUNT_SUMM}% selected. Please decrease by ${takeProfitsProppertySumm.amount - TAKE_PROFIT_MAX_AMOUNT_SUMM}%"` }));
       }
     }
 

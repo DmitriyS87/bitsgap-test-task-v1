@@ -1,4 +1,5 @@
 import { observable, action } from "mobx";
+import { TAKE_PROFIT_MINIMUM_PRICE_VALUE, TAKE_PROFIT_MINIMUM_PROFIT_VALUE, TAKE_PROFIT_PRICE_DEC_PLACES, TAKE_PROFIT_PROFIT_DEC_PLACES } from "PlaceOrder/constants";
 import { mathRoundToDec } from "utils";
 import { v4 } from 'uuid';
 import { PlaceOrderStore } from "./PlaceOrderStore";
@@ -57,7 +58,7 @@ class TakeProfitDomain {
 
     @action.bound
     public updateTargetPriceByMainPrice(price: number) {
-        this.price = mathRoundToDec(price + price * this.profit / 100, 2);
+        this.price = mathRoundToDec(price + price * this.profit / 100, TAKE_PROFIT_PRICE_DEC_PLACES);
     }
 
     @action.bound
@@ -68,13 +69,13 @@ class TakeProfitDomain {
 
     @action.bound
     public updateProfit() {
-        this.setProfit(mathRoundToDec((this.price / this.store.price - 1) * 100 || 0, 3));
+        this.setProfit(mathRoundToDec((this.price / this.store.price - 1) * 100 || 0, TAKE_PROFIT_PROFIT_DEC_PLACES));
         this.store.countProjectedProfit();
     }
 
     @action.bound
     public updateTargetPrice() {
-        this.setPrice(mathRoundToDec(this.store.price + this.profit / 100 * this.store.price || 0, 2));
+        this.setPrice(mathRoundToDec(this.store.price + this.profit / 100 * this.store.price || 0, TAKE_PROFIT_PRICE_DEC_PLACES));
         this.store.countProjectedProfit();
     }
 
@@ -82,12 +83,12 @@ class TakeProfitDomain {
     public validateState() {
         let error: TakeProfitError = {};
 
-        if (this.profit < 0.01) {
-            error.profit = "Minimum value is 0.01"
+        if (this.profit < TAKE_PROFIT_MINIMUM_PROFIT_VALUE) {
+            error.profit = `Minimum value is ${TAKE_PROFIT_MINIMUM_PROFIT_VALUE}`
         }
 
-        if (this.price <= 0) {
-            error.price = "Price must be greater than 0"
+        if (this.price <= TAKE_PROFIT_MINIMUM_PRICE_VALUE) {
+            error.price = `Price must be greater than ${TAKE_PROFIT_MINIMUM_PRICE_VALUE}`
         }
 
         this.setError(error);
