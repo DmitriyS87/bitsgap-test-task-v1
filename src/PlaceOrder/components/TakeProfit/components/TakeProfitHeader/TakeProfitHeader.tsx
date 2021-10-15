@@ -11,17 +11,17 @@ const b = block('take-profit-header');
 type Props = {
   isOpen: boolean;
   className?: string;
-  onToggle: () => void;
+  onChange: (value: boolean) => void;
 };
 
-const TakeProfitHeader = ({ isOpen, className, onToggle }: Props) => {
+const TakeProfitHeader = ({ isOpen, className, onChange }: Props) => {
   return <div className={b(null, className)}>
     <div className={b('title-wrapper')}>
       <Typography className={b('title')}>Take Profit</Typography>
       <Question className={b('question')} />
     </div>
     <div>
-      <Switch checked={isOpen} onChange={onToggle} />
+      <Switch checked={isOpen} onChange={onChange} />
     </div>
   </div>;
 };

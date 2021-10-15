@@ -26,7 +26,7 @@ const TakeProfit = observer(() => {
 
     return (
         <div className={b()}>
-            <TakeProfitHeader isOpen={isTakeProfitOn} onToggle={toggleTakeProfit} className={b('header')} />
+            <TakeProfitHeader isOpen={isTakeProfitOn} onChange={toggleTakeProfit} className={b('header')} />
             {isTakeProfitOn && <>
                 <TakeProfitList />
                 {takeProfitCount < 5 && <TextButton className={b('add-button')} onClick={handleAddTakeProfitClick}>

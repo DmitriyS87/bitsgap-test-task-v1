@@ -76,8 +76,8 @@ export class PlaceOrderStore {
   }
 
   @action.bound
-  public toggleTakeProfit() {
-    if (this.isTakeProfitOn) {
+  public toggleTakeProfit(value: boolean) {
+    if (!value) {
       this.hideTakeProfitForm();
       return;
     }
