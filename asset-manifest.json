@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/bitsgap-test-task-v1/static/css/main.4d8b3b1a.chunk.css",
-    "main.js": "/bitsgap-test-task-v1/static/js/main.265aa792.chunk.js",
-    "main.js.map": "/bitsgap-test-task-v1/static/js/main.265aa792.chunk.js.map",
+    "main.css": "/bitsgap-test-task-v1/static/css/main.1b78327d.chunk.css",
+    "main.js": "/bitsgap-test-task-v1/static/js/main.c830a02c.chunk.js",
+    "main.js.map": "/bitsgap-test-task-v1/static/js/main.c830a02c.chunk.js.map",
     "runtime-main.js": "/bitsgap-test-task-v1/static/js/runtime-main.0a9c7c0a.js",
     "runtime-main.js.map": "/bitsgap-test-task-v1/static/js/runtime-main.0a9c7c0a.js.map",
-    "static/js/2.558ea912.chunk.js": "/bitsgap-test-task-v1/static/js/2.558ea912.chunk.js",
-    "static/js/2.558ea912.chunk.js.map": "/bitsgap-test-task-v1/static/js/2.558ea912.chunk.js.map",
+    "static/js/2.9a8471d1.chunk.js": "/bitsgap-test-task-v1/static/js/2.9a8471d1.chunk.js",
+    "static/js/2.9a8471d1.chunk.js.map": "/bitsgap-test-task-v1/static/js/2.9a8471d1.chunk.js.map",
     "index.html": "/bitsgap-test-task-v1/index.html",
-    "static/css/main.4d8b3b1a.chunk.css.map": "/bitsgap-test-task-v1/static/css/main.4d8b3b1a.chunk.css.map",
-    "static/js/2.558ea912.chunk.js.LICENSE.txt": "/bitsgap-test-task-v1/static/js/2.558ea912.chunk.js.LICENSE.txt",
+    "static/css/main.1b78327d.chunk.css.map": "/bitsgap-test-task-v1/static/css/main.1b78327d.chunk.css.map",
+    "static/js/2.9a8471d1.chunk.js.LICENSE.txt": "/bitsgap-test-task-v1/static/js/2.9a8471d1.chunk.js.LICENSE.txt",
     "static/media/question.d0b53fe3.svg": "/bitsgap-test-task-v1/static/media/question.d0b53fe3.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.0a9c7c0a.js",
-    "static/js/2.558ea912.chunk.js",
-    "static/css/main.4d8b3b1a.chunk.css",
-    "static/js/main.265aa792.chunk.js"
+    "static/js/2.9a8471d1.chunk.js",
+    "static/css/main.1b78327d.chunk.css",
+    "static/js/main.c830a02c.chunk.js"
   ]
 }
