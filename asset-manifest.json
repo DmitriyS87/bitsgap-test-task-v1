@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/bitsgap-test-task-v1/static/css/main.1b78327d.chunk.css",
-    "main.js": "/bitsgap-test-task-v1/static/js/main.c830a02c.chunk.js",
-    "main.js.map": "/bitsgap-test-task-v1/static/js/main.c830a02c.chunk.js.map",
+    "main.js": "/bitsgap-test-task-v1/static/js/main.10d7c63e.chunk.js",
+    "main.js.map": "/bitsgap-test-task-v1/static/js/main.10d7c63e.chunk.js.map",
     "runtime-main.js": "/bitsgap-test-task-v1/static/js/runtime-main.0a9c7c0a.js",
     "runtime-main.js.map": "/bitsgap-test-task-v1/static/js/runtime-main.0a9c7c0a.js.map",
     "static/js/2.9a8471d1.chunk.js": "/bitsgap-test-task-v1/static/js/2.9a8471d1.chunk.js",
@@ -16,6 +16,6 @@
     "static/js/runtime-main.0a9c7c0a.js",
     "static/js/2.9a8471d1.chunk.js",
     "static/css/main.1b78327d.chunk.css",
-    "static/js/main.c830a02c.chunk.js"
+    "static/js/main.10d7c63e.chunk.js"
   ]
 }
