@@ -1,13 +1,13 @@
-import React, { FC } from "react";
-import CancelIcon from '@material-ui/icons/Cancel';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
+import React from "react";
+
 import block from "bem-cn-lite";
 
-import "./TakeProfitItem.scss";
+import "./TakeProfitRow.scss";
 import { PERCENT, QUOTE_CURRENCY } from 'PlaceOrder/constants';
-import { TakeProfitInput } from "./components/TakeProfitInput";
+import { TakeProfitInput } from "../TakeProfitInput/TakeProfitInput";
 import { TakeProfitDomain } from "PlaceOrder/store/TakeProfitDomain";
 import { PlaceOrderStore } from "PlaceOrder/store/PlaceOrderStore";
+import { RemoveButton } from "components";
 
 const b = block('take-profit-row');
 
@@ -19,7 +19,6 @@ interface Props extends PartialTakeProfitDomain {
   className?: string;
 };
 
-const RemoveButton: FC<IconButtonProps> = ({ className, ...props }) => <IconButton {...props} className={b('remove-button', className)} ><CancelIcon fontSize="small" /></IconButton>
 
 const TakeProfitRow = ({ id, error, isProfitBySell, className, profit, price, amount, setProfit, setPrice, setAmount, onDelete, updateAmount, updateProfit, updateTargetPrice }: Props) => {
   return <div className={b(null, className)}>

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import React, { FC } from 'react';
-import { TakeProfitRow } from '../TakeProfitItem/TakeProfitItem';
 import block from "bem-cn-lite";
 import { useStore } from 'PlaceOrder/context';
+import { TakeProfitRow } from '../TakeProfitRow/TakeProfitRow';
 
 const b = block('take-profit');
 

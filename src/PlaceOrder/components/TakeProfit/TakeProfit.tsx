@@ -2,14 +2,12 @@ import React from 'react';
 import block from "bem-cn-lite";
 import { observer } from "mobx-react";
 import CancelIcon from '@material-ui/icons/Cancel';
-import { TakeProfitHeader } from './components/TakeProfitHeader/TakeProfitHeader';
 import { useStore } from "../../context";
 
 import './TakeProfit.scss';
 import { TextButton } from 'components';
 import { QUOTE_CURRENCY } from 'PlaceOrder/constants';
-import { TakeProfitAmount } from './components/TakeProfitAmount/TakeProfitAmount';
-import { TakeProfitList } from './components/TakeProfitList/TakeProfitList';
+import { TakeProfitAmount, TakeProfitHeader, TakeProfitList } from './components';
 
 const PLACE_ORDER_MAX_TAKE_PROFIT = 5;
 

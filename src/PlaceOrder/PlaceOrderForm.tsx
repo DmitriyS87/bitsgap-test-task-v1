@@ -8,10 +8,9 @@ import { NumberInput, Button } from "components";
 
 import { BASE_CURRENCY, QUOTE_CURRENCY } from "./constants";
 import { useStore } from "./context";
-import { PlaceOrderTypeSwitch } from "./components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
 
 import "./PlaceOrderForm.scss";
-import { TakeProfit } from "./components/TakeProfit/TakeProfit";
+import { PlaceOrderTypeSwitch, TakeProfit } from "./components";
 
 const b = block("place-order-form");
 
