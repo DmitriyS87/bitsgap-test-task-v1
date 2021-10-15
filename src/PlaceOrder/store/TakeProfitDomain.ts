@@ -5,7 +5,7 @@ import { PlaceOrderStore } from "./PlaceOrderStore";
 
 export type TakeProfitItemType = TakeProfitDomain;
 
-export type TakeProfitData = Pick<TakeProfitItemType, 'amount' | 'price' | 'profit'>
+export type TakeProfitData = Pick<TakeProfitItemType, "amount" | "price" | "profit">
 
 type TakeProfitError = Partial<Record<keyof TakeProfitData, string>>;
 
@@ -14,10 +14,10 @@ class TakeProfitDomain {
     @observable price: number = 0;
     @observable amount: number = 0;
     @observable id: string = "";
-    @observable error: any = {};
+    @observable error: TakeProfitError = {};
     store: PlaceOrderStore;
 
-    constructor(store: any, initialState?: TakeProfitData, id: string = v4()) {
+    constructor(store: PlaceOrderStore, initialState?: TakeProfitData, id: string = v4()) {
         this.store = store;
         this.id = id;
         initialState && this.setInitialState(initialState);
@@ -39,13 +39,13 @@ class TakeProfitDomain {
     }
 
     @action.bound
-    public setError(error: any) {
+    public setError(error: TakeProfitError) {
         this.error = error;
     }
 
     @action.bound
-    public addError(error: any) {
-        [...Object.keys(error)].forEach((name) => {
+    public addError(error: TakeProfitError) {
+        ([...Object.keys(error)] as (keyof TakeProfitError)[]).forEach((name) => {
             this.error[name] = `${this.error[name] || ''} ${error[name] || ''}`.trim();
         })
     }

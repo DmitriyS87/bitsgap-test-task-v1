@@ -4,10 +4,6 @@ import { mathRoundToDec } from "utils";
 import { OrderSide } from "../model";
 import { TakeProfitDomain, TakeProfitData, TakeProfitItemType } from "./TakeProfitDomain";
 
-type PlaceOrderFormKeys = 'price' | 'amount' | 'projectedProfit' | 'takeProfits';
-
-type PlaceOrderStoreError = Partial<Record<PlaceOrderFormKeys | 'profitSumm', string>>;
-
 const defaultTakeProfit = {
   amount: 0,
   price: 0,
@@ -135,8 +131,8 @@ export class PlaceOrderStore {
   }
 
   @action.bound
-  public validatePlaceOrder(): PlaceOrderStoreError {
-    let error: PlaceOrderStoreError = {};
+  public validatePlaceOrder(): boolean {
+    let isError: boolean = false;
 
     if (this.takeProfitCount) {
       this.takeProfits.forEach((item) => item.validateState());
@@ -151,21 +147,22 @@ export class PlaceOrderStore {
       const wrongProfitOrderStartIndex = takeProfitsValues.findIndex((item, idx, arr) => idx > 0 && item.profit < arr[idx - 1].profit)
 
       if (wrongProfitOrderStartIndex !== -1) {
+        isError = true;
         this.takeProfits.forEach((item, idx) => idx >= wrongProfitOrderStartIndex - 1 && item.addError({ profit: "Each target's profit should be greater than the previous one" }));
       }
 
       if (takeProfitsProppertySumm.profit > 500) {
+        isError = true;
         this.takeProfits.forEach((item) => item.addError({ profit: "Maximum profit sum is 500%" }));
       }
 
       if (takeProfitsProppertySumm.amount > 100) {
+        isError = true;
         this.takeProfits.forEach((item) => item.addError({ amount: ` "${takeProfitsProppertySumm.amount}% out of 100% selected. Please decrease by ${takeProfitsProppertySumm.amount - 100}%"` }));
       }
-
-
     }
 
-    return error;
+    return !isError;
   };
 
   public countTakeProfitPrice(profit: number) {

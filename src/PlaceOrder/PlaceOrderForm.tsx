@@ -34,9 +34,9 @@ export const PlaceOrderForm = observer(() => {
     e.stopPropagation();
 
     const isValid = validatePlaceOrder();
-
     if (isValid) {
       // submit form
+      console.log('SUBMITED')
     }
   }
 
